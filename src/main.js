@@ -1,5 +1,4 @@
-;
-(function () {
+;(function () {
 
 	function gE(el) {
 		return document.getElementById(el);
@@ -11,6 +10,12 @@
 		return Math.floor(Math.random() * c + n);
 	}
 
+	function removeElementsByClass(className) {
+		var elements = document.getElementsByClassName(className);
+		while (elements.length > 0) {
+			elements[0].parentNode.removeChild(elements[0]);
+		}
+	}
 	var App = {
 		　　　　
 
@@ -22,19 +27,25 @@
 				scrollview : gE('scrollview'),
 				box : gE('box'),
 				timecount : gE('timecount'),
-				level : gE('level')
+				level : gE('level'),
+				lb : gE('lb')
 			};
 			var win;
 			var intervalId;
 			var timecount = 0;
 			var _this;
+			var appScore=0;
 			var app = {
 				initEl : function () {
 					_this = this;
+					appScore=score;
 					el.scrollview.style.width = setting.scWidth + 'px';
 					el.scrollview.style.height = setting.scHeight + 'px';
 					// document.body.scrollTop = rd(0, setting.scHeight - setting.bxHeight);
-					//document.body.scrollLeft = rd(0, setting.scWidth - setting.bxWidth);
+					// var scrollTop = document.documentElement.scrollTop || window.pageYOffset || document.body.scrollTop;
+					 //scrollTop= rd(0, setting.scHeight - setting.bxHeight);
+					// scrollTop= '500px';
+					//document.body.scrollTop = rd(0, setting.scWidth - setting.bxWidth);
 
 					//console.log(document.body.scrollTop);
 					win = _this.getViewport();
@@ -44,8 +55,11 @@
 					el.box.style.left = rd(win.width + setting.bxWidth, setting.scWidth - setting.bxWidth) + 'px';
 					el.box.style.top = rd(win.height + setting.bxHeight, setting.scHeight - setting.bxHeight) + 'px';
 					el.box.style.display = 'block';
+					el.box.style.backgroundColor = setting.boxColor;
 
 					el.level.innerHTML = '第' + setting.level + '关';
+
+					_this.babyBoxJoin();
 					//console.log(rd(win.width + setting.bxWidth, setting.vpWidth - setting.bxWidth));
 
 					//console.log(this);
@@ -70,6 +84,7 @@
 					box.removeEventListener('click', _this.youFindMeSuccess, false);
 					window.removeEventListener('resize', _this.resizeEvent, false);
 					window.clearInterval(intervalId);
+					removeElementsByClass('babybox');
 				},
 				getViewport : function () {
 
@@ -87,6 +102,7 @@
 
 				getCurPos : function () {
 					var pos = el.box.getBoundingClientRect();
+					//el.lb.innerHTML = '(' + Math.ceil(pos.width) + ',' + Math.ceil(pos.height) + ')';
 					//console.log(pos);
 					if (pos.top > win.height) {
 						el.info.innerText = '我在下面';
@@ -110,10 +126,14 @@
 				intervalTrigger : function () {
 					return window.setInterval(function () {
 						setting.totalTime--;
+						appScore++;
 						el.timecount.innerText = '剩余时间' + setting.totalTime + 's';
+						el.lb.innerHTML = '总用时'+appScore+'s';
 						if (setting.totalTime <= 0) {
 							_this.youFindMeFail();
+							
 						}
+						
 					}, 1000);
 				},
 				youFindMeSuccess : function () {
@@ -123,11 +143,12 @@
 					playdiv.style.display = 'block';
 
 					if (setting.level >= setting.maxLevel) {
-						playButton.innerText = '好咯，你赢了咯';
+						playButton.innerText = '好咯，你赢了咯!!';//+'用了'+appScore+'秒玩到了第'+setting.level+'关';
 						playButton.removeEventListener('click', playButtonGameStart, false);
 					} else {
 						levelIndex++;
 						playButton.innerText = '来!下一关！！';
+						score=appScore;
 					}
 				},
 				youFindMeFail : function () {
@@ -138,10 +159,23 @@
 				},
 
 				touchStartEvent : function () {
-					el.info.innerText = '翻滚！！';
+					//el.info.innerText = '滚啊滚！！';
 				},
 				touchEndEvent : function () {
-					el.info.innerText = '滚啊滚！！';
+					//el.info.innerText = '滚啊滚！！';
+				},
+				babyBoxJoin : function () {
+					for (var i = 0; i < setting.babyBoxCount; i++) {
+						var babybox = document.createElement("div");
+						babybox.style.width = setting.babyBoxWidth + 'px';
+						babybox.style.height = setting.babyBoxHeight + 'px';
+						babybox.style.backgroundColor = setting.babyBoxColor;
+						babybox.style.left = rd(0, setting.scWidth - setting.babyBoxWidth) + 'px';
+						babybox.style.top = rd(0, setting.scHeight - setting.babyBoxHeight) + 'px';
+						babybox.classList.add('babybox');
+						el.scrollview.appendChild(babybox);
+					}
+
 				}
 
 			};
@@ -150,19 +184,25 @@
 		}
 	};
 	var levelIndex = 0;
+	var score=0;
 	var settingMap = {
-		scWidth : [5000, 7000, 9000],
+		scWidth : [4000, 6000, 8000],
 		scHeight : [5000, 7000, 9000],
-		bxWidth : [100, 50, 20],
-		bxHeight : [100, 50, 20],
-		totalTime : [70, 65, 50],
-		level : [1, 2, 3]
+		bxWidth : [100, 90, 80],
+		bxHeight : [100, 90, 80],
+		totalTime : [50, 40, 30],
+		level : [1, 2, 3],
+		boxColor : ['yellow', 'green', 'blue'],
+		babyBoxColor : ['green', 'red', 'orange'],
+		babyBoxHeight : [50, 60, 70],
+		babyBoxWidth : [50, 60, 70],
+		babyBoxCount : [30, 40, 50]
 	};
 	var playButton = gE('playbutton');
 	var playdiv = gE('playdiv');
 
 	function startgame(level) {
-		console.log(123);
+
 		playdiv.style.display = 'none';
 
 		var setting = {
@@ -172,7 +212,12 @@
 			bxHeight : settingMap.bxHeight[levelIndex],
 			totalTime : settingMap.totalTime[levelIndex],
 			level : settingMap.level[levelIndex],
-			maxLevel : settingMap.level.length
+			maxLevel : settingMap.level.length,
+			boxColor : settingMap.boxColor[levelIndex],
+			babyBoxColor : settingMap.babyBoxColor[levelIndex],
+			babyBoxHeight : settingMap.babyBoxHeight[levelIndex],
+			babyBoxWidth : settingMap.babyBoxWidth[levelIndex],
+			babyBoxCount : settingMap.babyBoxCount[levelIndex],
 		};
 
 		var app = App.createNew(setting);
