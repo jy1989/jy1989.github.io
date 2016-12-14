@@ -33,6 +33,7 @@
         //var borderHackHeight = height;
         var hackCanvas;
         var hackCtx;
+        //var isSafari = /Safari/.test(navigator.userAgent) && /Apple Computer/.test(navigator.vendor);
 
         function _setRatio(mRatio) {
             ratio = mRatio;
@@ -76,18 +77,35 @@
             }
             magnifierDiv.appendChild(magnifierCanvas);
             magnifierCtx = magnifierCanvas.getContext("2d");
-
+            //if (isSafari) {
             hackCanvas = _createCanvas(targetCanvas.width + width, targetCanvas.height + height);
             hackCanvas.style.display = 'none';
             document.body.appendChild(hackCanvas);
             hackCtx = hackCanvas.getContext("2d");
-
+            //}
+            _renew();
             _draw();
         }
 
-        function _draw() {
+        function _renew() {
             hackCtx.clearRect(0, 0, hackCanvas.width, hackCanvas.height);
             hackCtx.drawImage(targetCanvas, width / 2, height / 2, targetCanvas.width, targetCanvas.height);
+        }
+
+
+        function _draw() {
+            /*
+            if (isSafari) {
+                hackCtx.clearRect(0, 0, hackCanvas.width, hackCanvas.height);
+                hackCtx.drawImage(targetCanvas, width / 2, height / 2, targetCanvas.width, targetCanvas.height);
+                magnifierCtx.clearRect(0, 0, magnifierCanvas.width, magnifierCanvas.height);
+                magnifierCtx.drawImage(hackCanvas, offsetX, offsetY, width, height, -widthOffset, -heightOffset, width * ratio, height * ratio);
+
+            } else {
+                magnifierCtx.clearRect(0, 0, magnifierCanvas.width, magnifierCanvas.height);
+                magnifierCtx.drawImage(targetCanvas, offsetX, offsetY, width, height, -widthOffset, -heightOffset, width * ratio, height * ratio);
+
+            }*/
             magnifierCtx.clearRect(0, 0, magnifierCanvas.width, magnifierCanvas.height);
             magnifierCtx.drawImage(hackCanvas, offsetX, offsetY, width, height, -widthOffset, -heightOffset, width * ratio, height * ratio);
             if (sightType) {
@@ -133,6 +151,12 @@
             }
             offsetX = event.offsetX || pageX - targetCanvas.offsetLeft;
             offsetY = event.offsetY || pageY - targetCanvas.offsetTop;
+
+            if (!isSafari) {
+                offsetX -= width / 2;
+                offsetY -= height / 2;
+            }
+
             /*
                         offsetX -= width / 2;
                         offsetY -= height / 2;
@@ -151,7 +175,8 @@
         return {
             bind: _bind,
             show: _show,
-            setRatio: _setRatio
+            setRatio: _setRatio,
+            renew: _renew
         };
     }
     return JyMagnifier
