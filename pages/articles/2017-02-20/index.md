@@ -2,7 +2,7 @@
 title: "人渣"
 date: "2017-02-20T00:00:00.000Z"
 layout: post
-path: "/人渣/"
+path: "/JUNO_song/"
 category: "歌词"
 description: "人人在指控謾罵 聲討我嗎"
 ---
