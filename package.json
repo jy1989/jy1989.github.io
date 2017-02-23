@@ -13,7 +13,8 @@
     "lint": "./node_modules/.bin/eslint --ext .js,.jsx --ignore-pattern public .",
     "test": "echo \"Error: no test specified\" && exit 1",
     "deploy": "gatsby build --prefix-links && gh-pages -d public",
-    "copyfiles":"cp -r ./{demo,CNAME} ./public/",
+    "copyfilesb":"cp -r ./{demo,CNAME} ./public/",
+    "copyfiles":"cp -r ./copy/{demo,CNAME} ./public/",
     "commitmaster": "gh-pages -b master -d public",
     "go":"npm run clean && npm run build && npm run copyfiles && npm run commitmaster"
   },
