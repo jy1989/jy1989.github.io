@@ -1,0 +1,14 @@
+siteTitle = "C人领地"
+siteDescr = "cool."
+siteAuthor = "JY"
+
+#siteTelegramUrl = "#"
+#siteTwitterUrl = "#"
+siteGithubUrl = "http://github.com/jy1989"
+#siteEmailUrl = "github@chenjianyi.com"
+#siteRssUrl = "#"
+#siteVkUrl = "#"
+
+#googleAnalyticsId = ""
+
+linkPrefix = "/hola"
