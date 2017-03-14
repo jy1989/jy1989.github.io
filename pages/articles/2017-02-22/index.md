@@ -10,6 +10,7 @@ description: "看到s04E15"
 看了这么多季的神盾局，第四季的脑洞特别大。  
 是不是编剧也看了  **「西部世界」**   回来编的？
 E15的最后大家都进入了framework，framework理沃特居然活过来了？Emma挂了，Mei在九头蛇工作。。。。   
+这个关于美剧的<a href="http://mp.weixin.qq.com/s/20Dh7_evx0ZtEhifjB2RuQ" target="_blank">微信号</a>分析得也相当深入     
 话说回来恶灵骑士是去了哪了？？ - -
 
 <img src="./p2380677849.jpg" />
